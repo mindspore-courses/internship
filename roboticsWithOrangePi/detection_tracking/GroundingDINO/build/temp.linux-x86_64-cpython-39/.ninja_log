@@ -1,0 +1,9 @@
+# ninja log v5
+1	1050	1720449414788584935	/home/yaxun/atestcode/GroundingDINO/build/temp.linux-x86_64-cpython-39/home/yaxun/atestcode/GroundingDINO/groundingdino/models/GroundingDINO/csrc/cuda_version.o	d6d65e2b9cd7772
+0	3510	1720449417240614566	/home/yaxun/atestcode/GroundingDINO/build/temp.linux-x86_64-cpython-39/home/yaxun/atestcode/GroundingDINO/groundingdino/models/GroundingDINO/csrc/MsDeformAttn/ms_deform_attn_cpu.o	8f99ed6d2bd13d8b
+1	13320	1720449427048733834	/home/yaxun/atestcode/GroundingDINO/build/temp.linux-x86_64-cpython-39/home/yaxun/atestcode/GroundingDINO/groundingdino/models/GroundingDINO/csrc/vision.o	4b14f46139eccb65
+0	15505	1720449429224760458	/home/yaxun/atestcode/GroundingDINO/build/temp.linux-x86_64-cpython-39/home/yaxun/atestcode/GroundingDINO/groundingdino/models/GroundingDINO/csrc/MsDeformAttn/ms_deform_attn_cuda.o	23935bc1e4f4f752
+7	625	1720604333291710370	/home/yaxun/FoundationPose/GroundingDINO/build/temp.linux-x86_64-cpython-39/home/yaxun/FoundationPose/GroundingDINO/groundingdino/models/GroundingDINO/csrc/cuda_version.o	77c4cec237aa7def
+6	3384	1720604336043742119	/home/yaxun/FoundationPose/GroundingDINO/build/temp.linux-x86_64-cpython-39/home/yaxun/FoundationPose/GroundingDINO/groundingdino/models/GroundingDINO/csrc/MsDeformAttn/ms_deform_attn_cpu.o	46eec3f6dba2ac17
+7	13137	1720604345795854627	/home/yaxun/FoundationPose/GroundingDINO/build/temp.linux-x86_64-cpython-39/home/yaxun/FoundationPose/GroundingDINO/groundingdino/models/GroundingDINO/csrc/vision.o	bf772e941a44a689
+7	15500	1720604348147881761	/home/yaxun/FoundationPose/GroundingDINO/build/temp.linux-x86_64-cpython-39/home/yaxun/FoundationPose/GroundingDINO/groundingdino/models/GroundingDINO/csrc/MsDeformAttn/ms_deform_attn_cuda.o	de8dc4d4c59cffdf

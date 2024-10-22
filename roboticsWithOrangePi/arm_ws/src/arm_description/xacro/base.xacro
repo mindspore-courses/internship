@@ -1,0 +1,404 @@
+<?xml version="1.0"?>
+<robot name="six_DoF_arm" xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <xacro:property name="PI" value="3.1416"/>
+    <xacro:property name="transparency" value="0.5" /> 
+    <xacro:property name="stl_offset_x" value="-13.145" /> 
+    <xacro:property name="stl_offset_y" value="2.13" /> 
+    <xacro:property name="stl_offset_z" value="-2.25" /> 
+
+    <xacro:property name="gentry_offset_x" value="0" /> 
+    <xacro:property name="gentry_offset_y" value="3.21" /> 
+    <xacro:property name="gentry_offset_z" value="-2.59" /> 
+
+    <xacro:property name="gentry2_offset_x" value="9.10" /> 
+    <xacro:property name="gentry2_offset_y" value="0" /> 
+    <xacro:property name="gentry2_offset_z" value="0.0" /> 
+
+    <xacro:property name="gentry_repo_1_offset_x" value="2.9" />
+    <xacro:property name="gentry_repo_2_offset_x" value="-3.8" />
+
+    <xacro:property name="effector_rope_limit_y" value="0.14" />
+
+ 
+    <link name="base_link"/>
+
+    <link name="link1">
+      <visual>
+        <geometry>
+            <mesh filename="package://arm_description/meshes/link1.stl" scale="1 1 1"/>
+        </geometry>
+        <origin xyz="${stl_offset_x} ${stl_offset_y} ${stl_offset_z}" rpy="0 0 0" />
+        <material name="base_link_color">
+          <color rgba="0.2 0.1 0.5 ${transparency}" />
+        </material>
+      </visual>
+
+      <collision>
+          <geometry>
+            <mesh filename="package://megatron_description/meshes/link1.stl" scale="1 1 1"/>
+          </geometry>
+          <origin xyz="${stl_offset_x} ${stl_offset_y} ${stl_offset_z}" rpy="0 0 ${PI / 2}" />
+      </collision>
+
+      <inertial>
+      <!-- [-4575.67185509 74264.61464985  4327.75421321] -->
+        <origin xyz="-8.68 -3.3 0.8" />
+        <mass value="2000" />
+        <inertia ixx="46.306933" ixy="0.862835" ixz=" 2.259418" iyy="17.499117" iyz="-0.0441948" izz="61.139778" />
+      </inertial>
+    </link>
+
+    <joint name="base_link_joint" type="fixed">
+      <origin xyz="8.68 3.3 2.25"/>
+      <parent link="base_footprint"/>
+      <child link="base_link"/>
+	</joint>
+
+   
+    
+<!-- 
+    <!--tracks-->
+    <xacro:track_streeing link_name="rear_left" link_origin_x="13.17" link_origin_y="-2.34" link_origin_z="-2.25"  link_origin_roll="0" link_origin_pitch="0" link_origin_yaw="${-PI / 2}" joint_origin_x="-17.35" joint_origin_y="0" joint_origin_z="0"  joint_origin_roll="0" joint_origin_pitch="0" joint_origin_yaw="0"/>
+    <xacro:track_streeing link_name="front_left" link_origin_x="-13.17" link_origin_y="2.12" link_origin_z="-2.25"  link_origin_roll="0" link_origin_pitch="0" link_origin_yaw="${PI / 2}" joint_origin_x="0" joint_origin_y="0" joint_origin_z="0"  joint_origin_roll="0" joint_origin_pitch="0" joint_origin_yaw="0"/>
+    <xacro:track_streeing link_name="front_right" link_origin_x="-13.17" link_origin_y="2.28" link_origin_z="-2.25"  link_origin_roll="0" link_origin_pitch="0" link_origin_yaw="${PI / 2}" joint_origin_x="0" joint_origin_y="-6.35" joint_origin_z="0"  joint_origin_roll="0" joint_origin_pitch="0" joint_origin_yaw="0"/>
+    <xacro:track_streeing link_name="rear_right" link_origin_x="13.17" link_origin_y="-2.20" link_origin_z="-2.25"  link_origin_roll="0" link_origin_pitch="0" link_origin_yaw="${-PI / 2}" joint_origin_x="-17.35" joint_origin_y="-6.35" joint_origin_z="0"  joint_origin_roll="0" joint_origin_pitch="0" joint_origin_yaw="0"/>
+    
+
+    <!-- Wheel -->
+    <xacro:wheel link_name="rear_right" axis="1" link_origin_x="14.4" link_origin_y="-2.2" link_origin_z="-0.4"  link_origin_roll="0" link_origin_pitch="0" link_origin_yaw="${-PI / 2}" joint_origin_x="-1.25" joint_origin_y="0" joint_origin_z="-1.85"  joint_origin_roll="0" joint_origin_pitch="0" joint_origin_yaw="0"/>
+    <xacro:wheel link_name="front_right" axis="1" link_origin_x="14.4" link_origin_y="-2.2" link_origin_z="-0.4"  link_origin_roll="0" link_origin_pitch="0" link_origin_yaw="${-PI / 2}" joint_origin_x="1.25" joint_origin_y="0" joint_origin_z="-1.85"  joint_origin_roll="0" joint_origin_pitch="0" joint_origin_yaw="0"/>
+    <xacro:wheel link_name="rear_left" axis="1" link_origin_x="14.4" link_origin_y="-2.2" link_origin_z="-0.4"  link_origin_roll="0" link_origin_pitch="0" link_origin_yaw="${-PI / 2}" joint_origin_x="-1.25" joint_origin_y="-0.15" joint_origin_z="-1.85"  joint_origin_roll="0" joint_origin_pitch="0" joint_origin_yaw="0"/>
+    <xacro:wheel link_name="front_left" axis="1" link_origin_x="14.4" link_origin_y="-2.2" link_origin_z="-0.4"  link_origin_roll="0" link_origin_pitch="0" link_origin_yaw="${-PI / 2}" joint_origin_x="1.25" joint_origin_y="-0.15" joint_origin_z="-1.85"  joint_origin_roll="0" joint_origin_pitch="0" joint_origin_yaw="0"/>
+    
+    
+    
+    <xacro:include filename="Transmission.xacro"/>
+    <xacro:include filename="gazebo.xacro"/>
+
+    <!-- lidar -->
+    <xacro:lidar_func link_name="lidar1_link" joint_name="lidar1_joint" link_origin_x="2.16" link_origin_y="4.6" link_origin_z="-2.72"  link_origin_roll="0" link_origin_pitch="0" link_origin_yaw="0" joint_origin_x="-4.6" joint_origin_y="-0.35" joint_origin_z="-0.25"  joint_origin_roll="0" joint_origin_pitch="0" joint_origin_yaw="0"/>
+    <xacro:lidar_func link_name="lidar2_link" joint_name="lidar2_joint" link_origin_x="2.16" link_origin_y="4.6" link_origin_z="-2.72"  link_origin_roll="0" link_origin_pitch="0" link_origin_yaw="0" joint_origin_x="-8.7" joint_origin_y="-0.15" joint_origin_z="0.06"  joint_origin_roll="0" joint_origin_pitch="0" joint_origin_yaw="0"/>
+    <xacro:lidar_func link_name="lidar3_link" joint_name="lidar3_joint" link_origin_x="2.16" link_origin_y="4.6" link_origin_z="-2.72"  link_origin_roll="0" link_origin_pitch="0" link_origin_yaw="0" joint_origin_x="-12.8" joint_origin_y="-0.35" joint_origin_z="-0.25"  joint_origin_roll="0" joint_origin_pitch="0" joint_origin_yaw="0"/>
+
+    <link name="gentry_link">
+      <visual>
+        <geometry>
+            <mesh filename="package://megatron_description/meshes/GENTRY.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <origin xyz="${stl_offset_x + gentry_offset_x} ${stl_offset_y + gentry_offset_y} ${stl_offset_z + gentry_offset_z}" rpy="0 0 ${PI / 2}" />
+        <material name="gentry_link_color">
+          <color rgba="0.5 0.9 0.1 ${transparency}" />
+        </material>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://megatron_description/meshes/GENTRY.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <origin xyz="${stl_offset_x + gentry_offset_x} ${stl_offset_y + gentry_offset_y} ${stl_offset_z + gentry_offset_z}" rpy="0 0 ${PI / 2}" />
+      </collision>
+
+      <inertial>
+        <origin xyz="0 0 0" />
+        <mass value="6" />
+        <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+      </inertial>
+
+    </link>
+
+    <joint name="gentry_joint" type="prismatic">
+        <parent link="base_link"  />
+        <child link="gentry_link" />
+        <origin xyz="${-gentry_offset_x} ${-gentry_offset_y} ${-gentry_offset_z}" rpy="0 0 0" />
+        <axis xyz="0 1 0" />
+        <limit lower="-7.43" upper="0.15" effort="1" velocity="1"/>
+    </joint>
+
+    <link name="gentry2_link">
+      <visual>
+        <geometry>
+            <mesh filename="package://megatron_description/meshes/GENTRY2.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <origin xyz="${stl_offset_x + gentry_offset_x + gentry2_offset_x} ${stl_offset_y + gentry_offset_y + gentry2_offset_y} ${stl_offset_z + gentry_offset_z + gentry2_offset_z}" rpy="0 0 ${PI / 2}" />
+        <material name="gentry2_link">
+          <color rgba="0.8 0.8 0.0 ${transparency}" />
+        </material>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://megatron_description/meshes/GENTRY2.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <origin xyz="${stl_offset_x + gentry_offset_x + gentry2_offset_x} ${stl_offset_y + gentry_offset_y + gentry2_offset_y} ${stl_offset_z + gentry_offset_z + gentry2_offset_z}" rpy="0 0 ${PI / 2}" />
+      </collision>
+
+      <inertial>
+        <origin xyz="0 0 0" />
+        <mass value="6" />
+        <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+      </inertial>
+
+    </link>
+
+
+    <joint name="gentry2_joint" type="prismatic">
+        <parent link="gentry_link"  />
+        <child link="gentry2_link" />
+        <origin xyz="${-gentry2_offset_x} ${-gentry2_offset_y} ${-gentry2_offset_z}" rpy="0 0 0" />
+        <axis xyz="1 0 0" />
+        <limit lower="-0.34" upper="0.34" effort="1" velocity="1"/>
+    </joint>
+
+
+    <link name="virtual_rope_gentry_link">
+      <visual>
+        <geometry>
+          <box size="0.0 0.0 0.0"/>
+        </geometry>
+        <origin xyz="0 0 -0.5" rpy="0 0 ${PI / 2}" />
+      </visual>
+      <collision>
+        <geometry>
+          <box size="0.0 0.0 0.0"/>
+        </geometry>
+        <origin xyz="0 0 -0.5" rpy="0 0 ${PI / 2}" />
+      </collision>
+      <inertial>
+        <origin xyz="0 0 0" />
+        <mass value="0.001" />
+        <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+      </inertial>
+    </link>
+    <joint name="virtual_rope_gentry_joint" type="prismatic">
+        <parent link="gentry2_link"  />
+        <child link="virtual_rope_gentry_link" />
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <axis xyz="0 1 0" />
+        <limit lower="${-effector_rope_limit_y}" upper="${effector_rope_limit_y}" effort="1" velocity="1"/>
+    </joint>
+  
+    <link name="virtual_bend_gentry_link">
+      <visual>
+        <geometry>
+          <box size="0.0 0.0 0.0"/>
+        </geometry>
+        <origin xyz="0 0 -0.5" rpy="0 0 ${PI / 2}" />
+      </visual>  
+      <collision>
+        <geometry>
+          <box size="0.0 0.0 0.0"/>
+        </geometry>
+        <origin xyz="0 0 -0.5" rpy="0 0 ${PI / 2}" />
+      </collision>
+      <inertial>
+        <origin xyz="0 0 0" />
+        <mass value="0.001" />
+        <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+      </inertial>    
+    </link>
+    <joint name="virtual_bend_gentry_joint" type="prismatic">
+        <parent link="virtual_rope_gentry_link"  />
+        <child link="virtual_bend_gentry_link" />
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <axis xyz="0 0 1" />
+        <limit lower="-0.5" upper="0" effort="1" velocity="1"/>
+    </joint>
+
+    <link name="virtual_effector_down_link">
+      <visual>
+        <geometry>
+            <cylinder radius="0.1" length="1" />
+        </geometry>
+        <origin xyz="0 0 -0.5" rpy="0 0 ${PI / 2}" />
+        <material name="virtual_effector_down_link_color">
+          <color rgba="0.5 0.3 0.4 ${transparency}" />
+        </material>
+      </visual>
+      <collision>
+        <geometry>
+          <cylinder radius="0.1" length="1" />
+        </geometry>
+        <origin xyz="0 0 -0.5" rpy="0 0 ${PI / 2}" />
+      </collision>
+      <inertial>
+        <origin xyz="0 0 0" />
+        <mass value="12" />
+        <inertia ixx="1.03" ixy="0" ixz="0" iyy="1.03" iyz="0" izz="0.06" />
+      </inertial>
+    </link>
+    
+    <joint name="virtual_effector_down_joint" type="prismatic">
+        <parent link="virtual_bend_gentry_link"  />
+        <child link="virtual_effector_down_link" />
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <axis xyz="0 0 1" />
+        <limit lower="-2.3" upper="0" effort="1" velocity="1"/>
+    </joint>
+
+
+
+
+    
+    <link name="gentry_rope_1_link">
+      <visual>
+        <geometry>
+            <mesh filename="package://megatron_description/meshes/GENTRY_ROPE.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <origin xyz="${stl_offset_x + gentry_offset_x + gentry2_offset_x + 2.9} ${stl_offset_y + gentry_offset_y + gentry2_offset_y} ${stl_offset_z + gentry_offset_z + gentry2_offset_z}" rpy="0 0 ${PI / 2}" />
+        <material name="gentry_rope_1_link_color">
+          <color rgba="0.9 0.1 0.1 ${transparency}" />
+        </material>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://megatron_description/meshes/GENTRY_ROPE.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <origin xyz="${stl_offset_x + gentry_offset_x + gentry2_offset_x + 2.9} ${stl_offset_y + gentry_offset_y + gentry2_offset_y} ${stl_offset_z + gentry_offset_z + gentry2_offset_z}" rpy="0 0 ${PI / 2}" />
+      </collision>
+
+      <inertial>
+        <origin xyz="0 0 0" />
+        <mass value="6" />
+        <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+      </inertial>
+
+    </link>
+
+    <joint name="gentry_rope_1_joint" type="prismatic">
+        <parent link="gentry2_link"  />
+        <child link="gentry_rope_1_link" />
+        <origin xyz="${- gentry_repo_1_offset_x} 0 0" rpy="0 0 0" />
+        <axis xyz="0 1 0" />
+        <limit lower="${-effector_rope_limit_y}" upper="${effector_rope_limit_y}" effort="1" velocity="1"/>
+    </joint>
+
+
+    <link name="gentry_rope_2_link">
+      <visual>
+        <geometry>
+            <mesh filename="package://megatron_description/meshes/GENTRY_ROPE.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <origin xyz="${stl_offset_x + gentry_offset_x + gentry2_offset_x + 2.9 + 2.25} ${-stl_offset_y - gentry_offset_y - gentry2_offset_y} ${stl_offset_z + gentry_offset_z + gentry2_offset_z}" rpy="0 0 ${-PI / 2}" />
+        <material name="gentry_rope_1_link_color">
+          <color rgba="0.9 0.1 0.1 ${transparency}" />
+        </material>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://megatron_description/meshes/GENTRY_ROPE.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <origin xyz="${stl_offset_x + gentry_offset_x + gentry2_offset_x + 2.9 + 2.25} ${-stl_offset_y - gentry_offset_y - gentry2_offset_y} ${stl_offset_z + gentry_offset_z + gentry2_offset_z}" rpy="0 0 ${-PI / 2}" />
+      </collision>
+
+      <inertial>
+        <origin xyz="0 0 0" />
+        <mass value="6" />
+        <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+      </inertial>
+
+    </link>
+
+    <joint name="gentry_rope_2_joint" type="prismatic">
+        <parent link="gentry2_link"  />
+        <child link="gentry_rope_2_link" />
+        <origin xyz="${- gentry_repo_2_offset_x} 0 0" rpy="0 0 0" />
+        <axis xyz="0 1 0" />
+        <limit lower="${-effector_rope_limit_y}" upper="${effector_rope_limit_y}" effort="1" velocity="1"/>
+    </joint>
+
+    <link name="effector_link_roll">
+      <visual>
+        <geometry>
+          <box size="0.0 0.0 0.0"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+      </visual>
+      <collision>
+        <geometry>
+          <box size="0.0 0.0 0.0"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+      </collision>
+      <inertial>
+        <origin xyz="0 0 0" />
+        <mass value="0.001" />
+        <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+      </inertial>
+    </link>
+
+    <joint name="effector_joint_roll" type="revolute">
+        <parent link="virtual_effector_down_link"  />
+        <child link="effector_link_roll" />
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <axis xyz="1 0 0" />
+        <limit lower="-0.95" upper="0.95" effort="1" velocity="1"/>
+    </joint>
+
+    
+    <link name="effector_link_pitch">
+      <visual>
+        <geometry>
+          <box size="0.0 0.0 0.0"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+      </visual>
+      <collision>
+        <geometry>
+          <box size="0.0 0.0 0.0"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+      </collision>
+      <inertial>
+        <origin xyz="0 0 0" />
+        <mass value="0.001" />
+        <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+      </inertial>
+        <geometry>
+        </geometry>
+    </link>
+
+    <joint name="effector_joint_pitch" type="revolute">
+        <parent link="effector_link_roll"  />
+        <child link="effector_link_pitch" />
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <axis xyz="0 1 0" />
+        <limit lower="-0.1" upper="0.1" effort="1" velocity="1"/>
+    </joint>
+
+    <link name="effector_link">
+      <visual>
+        <geometry>
+            <mesh filename="package://megatron_description/meshes/EFFECTOR.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <origin xyz="${stl_offset_x + gentry_offset_x + gentry2_offset_x} ${stl_offset_y + gentry_offset_y + gentry2_offset_y} ${stl_offset_z + gentry_offset_z + gentry2_offset_z}" rpy="0 0 ${PI / 2}" />
+        <material name="effector_link_color">
+          <color rgba="0.5 0.3 0.1 ${transparency}" />
+        </material>
+      </visual>
+      
+      <collision>
+          <geometry>
+            <mesh filename="package://megatron_description/meshes/EFFECTOR.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <origin xyz="${stl_offset_x + gentry_offset_x + gentry2_offset_x} ${stl_offset_y + gentry_offset_y + gentry2_offset_y} ${stl_offset_z + gentry_offset_z + gentry2_offset_z}" rpy="0 0 ${PI / 2}" />
+        <material name="effector_link_color">
+          <color rgba="0.5 0.3 0.1 ${transparency}" />
+        </material>
+      </collision>
+      
+    </link>
+
+    <joint name="effector_joint_yaw" type="revolute">
+        <parent link="effector_link_pitch"  />
+        <child link="effector_link" />
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <axis xyz="0 0 1" />
+        <limit lower="-0.02" upper="0.02" effort="1" velocity="1"/>
+    </joint>
+ -->
+
+
+
+
+ 
+
+</robot>
