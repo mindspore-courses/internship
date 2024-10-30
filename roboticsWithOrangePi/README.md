@@ -7,3 +7,11 @@
 4. detection_tracking 其中detection网络的修改自["Grounding DINO: Marrying DINO with Grounded Pre-Training for Open-Set Object Detection" (ECCV2024)](https://github.com/IDEA-Research/GroundingDINO), tracking网络的修改自["FoundationPose: Unified 6D Pose Estimation and Tracking of Novel Objects" (CVPR 2024)](https://github.com/NVlabs/FoundationPose), 也包含基于pyk4a的相机相关驱动代码
 5. graspnet_mindspore 基于Mindspore的平行爪位姿生成网络代码，原工作来自["GraspNet-1Billion: A Large-Scale Benchmark for General Object Grasping" (CVPR 2020)](https://github.com/graspnet/graspnet-baseline)（working）
 6. Detection&tracking的效果展示(done)，最终的项目展示视频(todo)
+
+
+graspnet_mindspore issues:
+1. mindspore_utils: L98,L99  :
+```python
+    if bias:    
+        nn.init.constant_(conv_unit.bias, 0)
+```

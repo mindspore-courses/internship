@@ -1,11 +1,11 @@
 """ PointNet2 backbone for feature learning.
     Author: Charles R. Qi
+    Modify: Yaxun
 """
 import os
 import sys
 import mindspore
-import mindspore.nn as nn 
-import mindspore.ops as P
+import mindspore.nn as nn
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 ROOT_DIR = os.path.dirname(BASE_DIR)
@@ -14,7 +14,7 @@ sys.path.append(os.path.join(ROOT_DIR, 'pointnet2'))
 
 from pointnet2_modules import PointnetSAModuleVotes, PointnetFPModule
 
-class Pointnet2Backbone(nn.Module):
+class Pointnet2Backbone(nn.Cell):
     r"""
        Backbone network for point cloud feature learning.
        Based on Pointnet++ single-scale grouping network. 
@@ -76,7 +76,7 @@ class Pointnet2Backbone(nn.Module):
 
         return xyz, features
 
-    def forward(self, pointcloud: torch.cuda.FloatTensor, end_points=None):
+    def forward(self, pointcloud: mindspore.Tensor, end_points=None):
         r"""
             Forward pass of the network
 
