@@ -1,3 +1,0 @@
-/home/yaxun/FoundationPose/mycpp/build/CMakeFiles/mycpp.dir
-/home/yaxun/FoundationPose/mycpp/build/CMakeFiles/edit_cache.dir
-/home/yaxun/FoundationPose/mycpp/build/CMakeFiles/rebuild_cache.dir
