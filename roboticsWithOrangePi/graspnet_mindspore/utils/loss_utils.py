@@ -2,8 +2,8 @@
     Author: chenxi-wang
 """
 
-import mindspore
-import mindspore.ops as ops 
+import mindspore as ms
+import mindspore.ops as P
 import numpy as np
 
 GRASP_MAX_WIDTH = 0.1
@@ -31,11 +31,11 @@ def transform_point_cloud(cloud, transform, format='4x4'):
     if not (format == '3x3' or format == '4x4' or format == '3x4'):
         raise ValueError('Unknown transformation format, only support \'3x3\' or \'4x4\' or \'3x4\'.')
     if format == '3x3':
-        cloud_transformed = ops.matmul(transform, cloud.T).T
+        cloud_transformed = P.matmul(transform, cloud.T).T
     elif format == '4x4' or format == '3x4':
         ones = cloud.new_ones(cloud.size(0), device=cloud.device).unsqueeze(-1)
-        cloud_ = ops.cat([cloud, ones], dim=1)
-        cloud_transformed = ops.matmul(transform, cloud_.T).T
+        cloud_ = P.cat([cloud, ones], dim=1)
+        cloud_transformed = P.matmul(transform, cloud_.T).T
         cloud_transformed = cloud_transformed[:, :3]
     return cloud_transformed
 
@@ -64,7 +64,7 @@ def generate_grasp_views(N=300, phi=(np.sqrt(5)-1)/2, center=np.zeros(3), r=1):
         yi = np.sqrt(1 - zi**2) * np.sin(2 * i * np.pi * phi)
         views.append([xi, yi, zi])
     views = r * np.array(views) + center
-    return mindspore.Tensor(views.astype(np.float32))
+    return ms.Tensor(views.astype(np.float32))
 
 def batch_viewpoint_params_to_matrix(batch_towards, batch_angle):
     """ Transform approach vectors and in-plane rotation angles to rotation matrices.
@@ -80,20 +80,20 @@ def batch_viewpoint_params_to_matrix(batch_towards, batch_angle):
                 rotation matrices in batch
     """
     axis_x = batch_towards
-    ones = ops.ones(axis_x.shape[0], dtype=axis_x.dtype)
-    zeros = ops.zeros(axis_x.shape[0], dtype=axis_x.dtype)
-    axis_y = ops.stack([-axis_x[:,1], axis_x[:,0], zeros], dim=-1)
-    mask_y = (torch.norm(axis_y, dim=-1) == 0)
+    ones = P.ones(axis_x.shape[0], dtype=axis_x.dtype)
+    zeros = P.zeros(axis_x.shape[0], dtype=axis_x.dtype)
+    axis_y = P.stack([-axis_x[:,1], axis_x[:,0], zeros], dim=-1)
+    mask_y = (P.norm(axis_y, dim=-1) == 0)
     axis_y[mask_y,1] = 1
-    axis_x = axis_x / torch.norm(axis_x, dim=-1, keepdim=True)
-    axis_y = axis_y / torch.norm(axis_y, dim=-1, keepdim=True)
-    axis_z = mindspore.cross(axis_x, axis_y)
-    sin = mindspore.sin(batch_angle)
-    cos = mindspore.cos(batch_angle)
-    R1 = mindspore.stack([ones, zeros, zeros, zeros, cos, -sin, zeros, sin, cos], dim=-1)
+    axis_x = axis_x / P.norm(axis_x, dim=-1, keepdim=True)
+    axis_y = axis_y / P.norm(axis_y, dim=-1, keepdim=True)
+    axis_z = P.cross(axis_x, axis_y)
+    sin = P.sin(batch_angle)
+    cos = P.cos(batch_angle)
+    R1 = P.stack([ones, zeros, zeros, zeros, cos, -sin, zeros, sin, cos], dim=-1)
     R1 = R1.reshape([-1,3,3])
-    R2 = mindspore.stack([axis_x, axis_y, axis_z], dim=-1)
-    batch_matrix = mindspore.matmul(R2, R1)
+    R2 = P.stack([axis_x, axis_y, axis_z], dim=-1)
+    batch_matrix = P.matmul(R2, R1)
     return batch_matrix
 
 def huber_loss(error, delta=1.0):
@@ -109,8 +109,8 @@ def huber_loss(error, delta=1.0):
     Author: Charles R. Qi
     Ref: https://github.com/charlesq34/frustum-pointnets/blob/master/models/model_util.py
     """
-    abs_error = mindspore.abs(error)
-    quadratic = mindspore.clamp(abs_error, max=delta)
+    abs_error = P.abs(error)
+    quadratic = P.clamp(abs_error, max=delta)
     linear = (abs_error - quadratic)
     loss = 0.5 * quadratic**2 + delta * linear
     return loss

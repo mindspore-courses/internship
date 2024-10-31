@@ -75,37 +75,46 @@ def gather_operation(features, idx):
         """
     return P.GatherNd()(features, idx.unsqueeze(-1).expand(idx.shape + (features.shape[1],)))
 
+def three_nn(unknown, known):
+    r"""
+        Find the three nearest neighbors of unknown in known
+    Parameters
+    ----------
+    unknown : ms.Tensor
+        (B, n, 3) tensor of known features
+    known : torch.Tensor
+        (B, m, 3) tensor of unknown features
 
-# class ThreeNN(Function):
-#     @staticmethod
-#     def forward(ctx, unknown, known):
-#         # type: (Any, torch.Tensor, torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]
-#         r"""
-#             Find the three nearest neighbors of unknown in known
+    Returns
+    -------
+    dist : ms.Tensor
+        (B, n, 3) l2 distance to the three nearest neighbors
+    idx : torch.Tensor
+        (B, n, 3) index of 3 nearest neighbors
+    """
+    dist2 = square_distance(unknown, known)
+    dist2, idx = P.TopK()(dist2, 3)
+    return P.Sqrt()(dist2), idx
+
+def three_interpolate(features, idx, weight):  
+    r"""
+#             Performs weight linear interpolation on 3 features
 #         Parameters
 #         ----------
-#         unknown : torch.Tensor
-#             (B, n, 3) tensor of known features
-#         known : torch.Tensor
-#             (B, m, 3) tensor of unknown features
+#         features : ms.Tensor
+#             (B, c, m) Features descriptors to be interpolated from
+#         idx : ms.Tensor
+#             (B, n, 3) three nearest neighbors of the target features in features
+#         weight : ms.Tensor
+#             (B, n, 3) weights
 
 #         Returns
 #         -------
-#         dist : torch.Tensor
-#             (B, n, 3) l2 distance to the three nearest neighbors
-#         idx : torch.Tensor
-#             (B, n, 3) index of 3 nearest neighbors
+#         ms.Tensor
+#             (B, c, n) tensor of the interpolated features
 #         """
-#         dist2, idx = _ext.three_nn(unknown, known)
-
-#         return torch.sqrt(dist2), idx
-
-#     @staticmethod
-#     def backward(ctx, a=None, b=None):
-#         return None, None
-
-
-# three_nn = ThreeNN.apply
+    B, c, m = features.shape
+    n = idx.shape[1]
 
 
 # class ThreeInterpolate(Function):

@@ -11,7 +11,7 @@ Extended with the following:
 '''
 import mindspore as ms
 import mindspore.nn as nn
-import mindspore.ops.functional as F
+import mindspore.mint.nn.functional as F
 import mindspore.ops as P
 
 import os
@@ -137,7 +137,7 @@ class PointnetSAModuleVotes(nn.Cell):
 
 
 
-class PointnetFPModule(nn.Module):
+class PointnetFPModule(nn.Cell):
     r"""Propigates the features of one set to another
 
     Parameters
@@ -152,7 +152,7 @@ class PointnetFPModule(nn.Module):
         super().__init__()
         self.mlp = ms_utils.SharedMLP(mlp, bn=bn)
 
-    def forward(
+    def construct(
             self, unknown: ms.Tensor, known: ms.Tensor,
             unknow_feats: ms.Tensor, known_feats: ms.Tensor
     ) -> ms.Tensor:
