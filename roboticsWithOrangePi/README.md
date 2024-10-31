@@ -9,3 +9,5 @@
 6. Detection&tracking的效果展示(done)，最终的项目展示视频(todo)
 
 
+------
+当前仓库只包含 graspnet_mindspore 部分， 其他部分代码请见魔乐社区: https://modelers.cn/models/Yaxun-Yang/roboticsWithOrangePi
