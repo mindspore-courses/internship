@@ -9,5 +9,3 @@
 6. Detection&tracking的效果展示(done)，最终的项目展示视频(todo)
 
 
-graspnet_mindspore issues:
-1. mindspore_utils: L98,L99  :
